@@ -4,6 +4,7 @@
 
     </head>
     <body>
+      <button id="playsong">click then it will play a song for you</button>
         <script src="https://js-cdn.music.apple.com/musickit/v3/musickit.js" data-web-components async></script>
 <script>
     document.addEventListener('musickitloaded', async function () {
@@ -24,30 +25,39 @@
   // MusicKit instance is available
   const music = MusicKit.getInstance();
 
-  await music.authorize();
+  //await music.authorize();
   // Set the playback queue to a specific album, and play
+  /*
   music.setQueue({
     album: '1025210938'
   });
 
   // Playback Controls
   music.play();
-
-  //await music.authorize();
-  /*
-  const { songs } = await music.api.music("Counting Stars", {
-  limit: 1,
-  types: "songs",
-});
-
-if (songs && songs.data[0]) {
-  await music.playNext({ song: resources.songs.data[0].id });
-}
-else{
-    console.log("no song here");
-}
 */
-});
+const result = await music.api.music(
+  `/v1/catalog/us/search`,
+  { term: 'faded', types: 'songs'}
+);
+document.getElementById("playsong").onclick=async() => {
+  if (result) {
+
+  music.setQueue({
+    songs: [result.data.results.songs.data[0].id],
+    startPlaying: true,
+  });
+  //music.play({ song: result.data.results.songs.data[0].id });
+  }
+  else{
+    console.log("no song here");
+  }
+};
+/*
+music.value.addEventListener("mediaPlaybackError", (data) => {
+    console.log("Playback Error", data);
+  });
+*/
+    });
 </script>
 </body>
 </html>
