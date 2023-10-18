@@ -1,0 +1,49 @@
+<html>
+    <head>
+    <meta name="apple-music-developer-token" content="eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkNMNjNSNU5LNloifQ.eyJpYXQiOjE2OTc1MjYzODQsImV4cCI6MTcxMzA3ODM4NCwiaXNzIjoiUFBOQkc5NVhKOSJ9.Xlwaz1tXRgpuySsvtsbVfY8P8VLC9zws_RXfcgWpwyoI0-4WlBdNOB9748RVvjF8n3bfHqbcDp-PvWoFZaKlTg">
+
+    </head>
+    <body>
+        <script src="https://js-cdn.music.apple.com/musickit/v3/musickit.js" data-web-components async></script>
+<script>
+    console.log("before load");
+    document.addEventListener('musickitloaded', async function () {
+    console.log("music kit");
+  // Call configure() to configure an instance of MusicKit on the Web.
+  try {
+    await MusicKit.configure({
+      developerToken: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkNMNjNSNU5LNloifQ.eyJpYXQiOjE2OTc1MjYzODQsImV4cCI6MTcxMzA3ODM4NCwiaXNzIjoiUFBOQkc5NVhKOSJ9.Xlwaz1tXRgpuySsvtsbVfY8P8VLC9zws_RXfcgWpwyoI0-4WlBdNOB9748RVvjF8n3bfHqbcDp-PvWoFZaKlTg",
+      app: {
+        name: "MusicKit Web App",
+        build: "1.0.0",
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  // MusicKit instance is available
+  const music = MusicKit.getInstance();
+  /*
+  const {songs} = await music.api.music(
+  `/v1/catalog/us/search`,
+  { term: 'Counting Stars', types: 'songs'}
+);*/
+
+  //await music.authorize();
+  const { songs } = await music.api.music("Counting Stars", {
+  limit: 1,
+  types: "songs",
+});
+
+if (songs && songs.data[0]) {
+  await music.playNext({ song: resources.songs.data[0].id });
+}
+else{
+    console.log("no song here");
+}
+});
+</script>
+</body>
+</html>
+
