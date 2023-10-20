@@ -1,10 +1,18 @@
 <html>
     <head>
-    <meta name="apple-music-developer-token" content="eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IkNMNjNSNU5LNloifQ.eyJpYXQiOjE2OTc1MjYzODQsImV4cCI6MTcxMzA3ODM4NCwiaXNzIjoiUFBOQkc5NVhKOSJ9.Xlwaz1tXRgpuySsvtsbVfY8P8VLC9zws_RXfcgWpwyoI0-4WlBdNOB9748RVvjF8n3bfHqbcDp-PvWoFZaKlTg">
-
     </head>
     <body>
       <button id="playsong">click then it will play a song for you</button>
+
+      <div class="overflow-song-wrapper">
+        <div class="song" id="song-1" data-music="1196294581">FADED</div>
+        <div class="song" id="song-2" data-music="1238673347">THERE FOR YOU</div>
+        <div class="song" id="song-3" data-music="1170699706">DON'T LET ME DOWN</div>
+        <div class="song" id="song-4" data-music="1440758945">WE FOUND LOVE</div>
+        <div class="song" id="song-5" data-music="1445055017">WOLVES</div>
+        <div class="song" id="song-6" data-music="693226464">TITANIUM</div>
+        <div class="song" id="song-7" data-music="1440861976">CLARITY</div>
+      </div>
       <apple-music-card-player></apple-music-card-player>
       <apple-music-progress></apple-music-progress>
 
@@ -27,17 +35,6 @@
 
   // MusicKit instance is available
   const music = MusicKit.getInstance();
-
-  //await music.authorize();
-  // Set the playback queue to a specific album, and play
-  /*
-  music.setQueue({
-    album: '1025210938'
-  });
-
-  // Playback Controls
-  music.play();
-*/
 const result = await music.api.music(
   `/v1/catalog/us/search`,
   { term: 'faded', types: 'songs'}
@@ -56,11 +53,16 @@ document.getElementById("playsong").onclick=async() => {
     console.log("no song here");
   }
 };
-/*
-music.value.addEventListener("mediaPlaybackError", (data) => {
-    console.log("Playback Error", data);
-  });
-*/
+document.querySelectorAll('.song').forEach(btn => {
+        btn.onclick=async() => {
+            console.log(btn.getAttribute('id') + '-' + btn.dataset.music);
+
+            music.setQueue({
+              songs: [btn.dataset.music],
+              startPlaying: true,
+            });
+        };
+      });
     });
 </script>
 </body>
